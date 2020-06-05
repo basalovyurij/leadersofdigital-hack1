@@ -4,15 +4,22 @@ import roman
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-BAD_WORDS = {'мцк', 'карте', 'посмотреть', 'вднх'}
+def read_file(name):
+    with open(name, 'r', encoding='utf8') as f:
+        res = set()
+        for line in f.readlines():
+            res.add(line.strip().lower())
+    return res
 
-with open('metro.csv', 'r') as f:
-    METROS = set()
-    for line in f.readlines():
-        METROS.add(line.strip().lower())
+
+BAD_WORDS = read_file('bad_words.csv')
+METROS = read_file('metro.csv')
 
 
 def transform_word(s):
+    if s == 'ii':
+        return '2'
+
     try:
         return str(roman.fromRoman(s.upper()))
     except roman.InvalidRomanNumeralError:
@@ -38,7 +45,7 @@ def transform_address(address):
 
 def get_top_words(name, transform):
     res = []
-    with open(name, 'r') as f:
+    with open(name, 'r', encoding='utf8') as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             address = row[1].lower()
@@ -52,18 +59,41 @@ def get_top_words(name, transform):
     return words_freq
 
 
-bad = get_top_words('bad.csv', True)
-good = get_top_words('good.csv', False)
+def print_freq_bad_words():
+    bad = get_top_words('bad.csv', True)
+    good = get_top_words('good.csv', False)
 
-delta = []
-for k, v in bad.items():
-    if v < 1000:
-        continue
-    freq = 1
-    if k in good:
-        freq = good[k]
-    delta.append((k, v / freq, v, freq))
+    delta = []
+    for k, v in bad.items():
+        if v < 500:
+            continue
+        freq = 1
+        if k in good:
+            freq = good[k]
+        delta.append((k, v / freq, v, freq))
 
-delta.sort(key=lambda x: -x[1])
-for i in delta[:30]:
-    print(i)
+    delta.sort(key=lambda x: -x[1])
+    for i in delta[:30]:
+        print(i)
+
+
+def generate_bad_words():
+    bad = get_top_words('bad.csv', True)
+    good = get_top_words('good.csv', False)
+
+    delta = []
+    for k, v in bad.items():
+        if v < 500:
+            continue
+        freq = 1
+        if k in good:
+            freq = good[k]
+        delta.append((k, v / freq, v, freq))
+
+    with open('bad_words.csv', 'w', encoding='utf8') as f:
+        for i in delta:
+            if i[1] > 10:
+                f.write(i[0] + '\n')
+
+
+print_freq_bad_words()
