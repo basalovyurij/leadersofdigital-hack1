@@ -1,0 +1,14 @@
+wtforms
+flask
+deeppavlov
+fasttext
+gensim
+lru-dict
+methodtools
+numpy
+overrides
+pandas
+sklearn
+tensorflow
+tensorflow-gpu==1.14.0
+vptree

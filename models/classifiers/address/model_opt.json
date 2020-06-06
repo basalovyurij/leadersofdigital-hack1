@@ -1,0 +1,44 @@
+{
+  "embedding_size": 100,
+  "n_classes": 3,
+  "model_name": "cnn_model",
+  "optimizer": "Adam",
+  "loss": "binary_crossentropy",
+  "learning_rate": [
+    0.01,
+    0.0001
+  ],
+  "learning_rate_decay": "exponential",
+  "last_layer_activation": "softmax",
+  "restore_lr": false,
+  "classes": null,
+  "text_size": null,
+  "padding": "pre",
+  "in": [
+    "x_emb"
+  ],
+  "in_y": [
+    "y_onehot"
+  ],
+  "out": [
+    "y_pred_probas"
+  ],
+  "main": true,
+  "save_path": "C:/Repos/leadersofdigital-hack1/models/classifiers/address/model",
+  "load_path": "C:/Repos/leadersofdigital-hack1/models/classifiers/address/model",
+  "kernel_sizes_cnn": [
+    3,
+    5,
+    7
+  ],
+  "filters_cnn": 256,
+  "learning_rate_decay_batches": 5000,
+  "learning_rate_drop_patience": 5,
+  "learning_rate_drop_div": 5.0,
+  "coef_reg_cnn": 0.001,
+  "coef_reg_den": 0.01,
+  "dropout_rate": 0.5,
+  "dense_size": 100,
+  "mode": "train",
+  "epochs_done": 0
+}
