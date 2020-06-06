@@ -17,8 +17,6 @@ train_bad = bad[:130000]
 test_good = good[130000:]
 test_bad = bad[130000:]
 
-# tr = list(map(lambda x: transform_address(x), test_bad.values))
-
 train_data = []
 for i in train_good:
     train_data.append([i, 1])

@@ -98,4 +98,4 @@ def generate_bad_words():
                 f.write(i[0] + '\n')
 
 
-print_freq_bad_words()
+# print_freq_bad_words()
