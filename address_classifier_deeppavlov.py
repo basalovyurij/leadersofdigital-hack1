@@ -1,12 +1,12 @@
 import html
 import re
-import pandas
-import numpy as np
 
+import numpy as np
+import pandas
 import pandas as pd
 from deeppavlov import *
 
-import test
+from simple_transformer import transform_multi_addresses_simple
 
 ROOT_PATH = "C:/Repos/leadersofdigital-hack1"
 
@@ -220,6 +220,6 @@ settings = {
 # model = train_model(settings, download=True)
 model = build_model(settings, download=True)
 bad = pd.read_csv("bad.csv", delimiter=";")['address'].values
-bad_transformed = [test.transform_address(i) for i in bad]
+bad_transformed = transform_multi_addresses_simple(bad)
 print(sum(map(lambda x: int(x[0]), model(bad))) / len(bad))
 print(sum(map(lambda x: int(x[0]), model(bad_transformed))) / len(bad))
