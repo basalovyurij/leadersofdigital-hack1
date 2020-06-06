@@ -29,9 +29,12 @@ def transform_word(s):
         return '2'
 
     try:
-        return str(roman.fromRoman(s.upper()))
+        return str(roman.fromRoman(s.replace('м', 'm').replace('х', 'x').upper()))
     except roman.InvalidRomanNumeralError:
         pass
+
+    if all(i in string.punctuation + '«»' for i in s):
+        return None
 
     if len(s) == 3 and s.endswith('ао'):
         return None
@@ -39,15 +42,20 @@ def transform_word(s):
     if s in BAD_WORDS:
         return None
 
-    return s.strip('.\'"`')
+    return s.strip('.\'"`-')
 
 
 def transform_address_simple(address):
     address = clear_address(address.lower())
     for s in METROS:
         address = address.replace('м.' + s, '').replace('м. ' + s, '')
-    words = nltk.word_tokenize(address, language='russian', preserve_line=True)
-    res = ' '.join(filter(lambda x: x is not None and x not in string.punctuation, map(transform_word, words)))
+    words = []
+    for w in nltk.word_tokenize(address, language='russian', preserve_line=True):
+        if '.' in w:
+            words.extend(filter(None, w.split('.')))
+        else:
+            words.append(w)
+    res = ' '.join(filter(lambda x: x is not None, map(transform_word, words)))
     return res
 
 
