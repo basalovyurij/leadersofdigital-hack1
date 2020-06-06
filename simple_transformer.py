@@ -2,6 +2,7 @@ import csv
 import nltk
 import roman
 import string
+import re
 from sklearn.feature_extraction.text import CountVectorizer
 
 
@@ -15,6 +16,12 @@ def read_file(name):
 
 BAD_WORDS = read_file('bad_words.csv')
 METROS = read_file('metro.csv')
+ADDR_REGEX = r'.*?(((кв|к|стр|д|дом)\.?\s\d{1,4})|([а-яА-Я]{4,}\s[\d\-\/]{1,5}))'
+
+
+def clear_address(addr):
+    match = re.search(ADDR_REGEX, addr)
+    return match.group(0) if match else addr
 
 
 def transform_word(s):
@@ -36,7 +43,7 @@ def transform_word(s):
 
 
 def transform_address_simple(address):
-    address = address.lower()
+    address = clear_address(address.lower())
     for s in METROS:
         address = address.replace('м.' + s, '').replace('м. ' + s, '')
     words = nltk.word_tokenize(address, language='russian', preserve_line=True)
