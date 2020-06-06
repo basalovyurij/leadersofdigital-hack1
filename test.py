@@ -12,6 +12,12 @@ def read_file(name):
     return res
 
 
+def save_to_csv(name, rows):
+    with open(name, 'w', encoding='utf8') as f:
+        writer = csv.writer(f, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerows(rows)
+
+
 BAD_WORDS = read_file('bad_words.csv')
 METROS = read_file('metro.csv')
 
@@ -97,3 +103,17 @@ def generate_bad_words():
 
 
 print_freq_bad_words()
+
+
+def save_result_to_csv(name, result_name):
+    res = []
+    with open(name, 'r', encoding='utf8') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+            address = row[1].lower()
+            address = transform_address(address)
+            res.append([row[0], row[1], address])
+        save_to_csv(result_name, res)
+
+
+save_result_to_csv('bad.csv', 'result.csv')
