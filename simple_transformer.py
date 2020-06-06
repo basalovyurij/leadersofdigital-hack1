@@ -32,7 +32,7 @@ def transform_word(s):
     if s in BAD_WORDS:
         return None
 
-    return s.strip('.')
+    return s.strip('.\'"`')
 
 
 def transform_address_simple(address):
