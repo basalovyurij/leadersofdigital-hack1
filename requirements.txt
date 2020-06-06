@@ -1,4 +1,4 @@
-wtforms
+tforms
 flask
 deeppavlov
 fasttext
@@ -12,3 +12,8 @@ sklearn
 tensorflow
 tensorflow-gpu==1.14.0
 vptree
+munch
+nltk
+numpy
+sklearn
+torch
