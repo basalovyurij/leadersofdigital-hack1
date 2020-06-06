@@ -13,7 +13,7 @@ def read_file(name):
 
 
 def save_to_csv(name, rows):
-    with open(name, 'w', encoding='utf8') as f:
+    with open(name, 'w', encoding='utf8', newline='') as f:
         writer = csv.writer(f, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         writer.writerows(rows)
 
