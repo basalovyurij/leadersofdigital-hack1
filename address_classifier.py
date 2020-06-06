@@ -96,11 +96,11 @@ class SklearnChecker(Checker):
         return self.model.predict(self.vectorizer.transform(addreses))
 
 
-def test_transformer(transform_func, checker: Checker):
-    bad_values = pandas.read_csv("bad.csv", delimiter=";")['address'].tolist()
+def test_transformer(multi_transform_func, checker: Checker):
+    bad_values = pandas.read_csv("bad.csv", delimiter=";")['address'].tolist()[200000:]
     pred_before_transform = checker.is_good(bad_values)
     print(sum(pred_before_transform) / len(bad_values))
 
-    transformed = [transform_func(i) for i in bad_values]
+    transformed = multi_transform_func(bad_values)
     pred_after_transform = checker.is_good(transformed)
     print(sum(pred_after_transform) / len(bad_values))

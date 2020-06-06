@@ -44,6 +44,10 @@ def transform_address_simple(address):
     return res
 
 
+def transform_multi_addresses_simple(addresses):
+    return [transform_address_simple(a) for a in addresses]
+
+
 def get_top_words(name, transform):
     res = []
     with open(name, 'r', encoding='utf8') as f:
