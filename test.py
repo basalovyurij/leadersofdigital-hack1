@@ -1,6 +1,8 @@
 import csv
 import nltk
+import random
 import roman
+import string
 from sklearn.feature_extraction.text import CountVectorizer
 
 
@@ -28,18 +30,18 @@ def transform_word(s):
     if len(s) == 3 and s.endswith('ао'):
         return None
 
-    if s in METROS:
-        return None
-
     if s in BAD_WORDS:
         return None
 
-    return s
+    return s.strip('.')
 
 
 def transform_address(address):
+    address = address.lower()
+    for s in METROS:
+        address = address.replace('м.' + s, '').replace('м. ' + s, '')
     words = nltk.word_tokenize(address, language='russian', preserve_line=True)
-    res = ' '.join(filter(lambda x: x is not None, map(transform_word, words)))
+    res = ' '.join(filter(lambda x: x is not None and x not in string.punctuation, map(transform_word, words)))
     return res
 
 
