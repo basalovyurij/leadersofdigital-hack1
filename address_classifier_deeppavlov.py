@@ -220,16 +220,13 @@ settings = {
 # model = train_model(settings, download=True)
 model = build_model(settings, download=True)
 bad_csv = pd.read_csv("bad.csv", delimiter=";")
-bad = bad_csv['address'].values
-# good_heads = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
-# good = pandas.read_csv("good.csv", delimiter=";", names=good_heads)["2"].sample(frac=1).values
-bad_transformed = transform_multi_addresses_simple(bad)
-res = []
-for i in range(len(bad)):
-    res.append([bad_csv["id"][i], bad_csv["address"][i], bad_transformed[i]])
-df = pandas.DataFrame(data=res)
-df.to_csv('result_firmachi.csv', sep=';', encoding='utf-8', index=False, header=False)
+bad_addresses = bad_csv['address'].values
+bad_transformed = transform_multi_addresses_simple(bad_addresses)
+# res = []
+# for i in range(len(bad_addresses)):
+#     res.append([bad_csv["id"][i], bad_csv["address"][i], bad_transformed[i]])
+# df = pandas.DataFrame(data=res)
+# df.to_csv('result_firmachi.csv', sep=';', encoding='utf-8', index=False, header=False)
 
-print(sum(map(lambda x: int(x[0]), model(bad))) / len(bad))
-print(sum(map(lambda x: int(x[0]), model(bad_transformed))) / len(bad))
-# print(sum(map(lambda x: int(x[0]), model(good))) / len(good))
+# print(sum(map(lambda x: int(x[0]), model(bad))) / len(bad))
+print(sum(map(lambda x: int(x[0]), model(bad_transformed))) / len(bad_transformed))

@@ -16,7 +16,8 @@ def read_file(name):
 
 BAD_WORDS = read_file('bad_words.csv')
 METROS = read_file('metro.csv')
-ADDR_REGEX = r'.*?(((кв|к|стр|д|дом)\.?\s\d{1,4})|([а-яА-Я]{4,}\s[\d\-\/]{1,5}))'
+ADDR_REGEX = r'.*(((кв|к|стр|д|дом)\.?\s[\d]{1,4}\/?[\dа-яА-Я]{0,5})|([а-яА-Я]{4,}\s[\d\-\/]{1,5}))'
+MISSING_DATA_REGEX = r'(?P<missing>(корп|стр)\s)[а-яА-Я]'
 
 
 def clear_address(addr):
@@ -56,7 +57,8 @@ def transform_address_simple(address):
         else:
             words.append(w)
     res = ' '.join(filter(lambda x: x is not None, map(transform_word, words)))
-    return res
+    missing_match = re.search(MISSING_DATA_REGEX, res)
+    return res.replace(missing_match.group('missing'), '') if missing_match else res
 
 
 def transform_multi_addresses_simple(addresses):
