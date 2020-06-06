@@ -8,10 +8,14 @@ def save_result_to_csv(name, result_name):
     res = []
     with open(name, 'r', encoding='utf8') as f:
         reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
+        firstrow = True
         for row in reader:
-            address = row[1].lower()
-            address = transform_address_simple(address)
-            res.append([row[0], row[1], address])
+            if firstrow:
+                firstrow = False
+            else:
+                address = row[1].lower()
+                address = transform_address_simple(address)
+                res.append([row[0], row[1], address])
     with open(result_name, 'w', encoding='utf8', newline='') as f:
         writer = csv.writer(f, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         writer.writerows(res)
