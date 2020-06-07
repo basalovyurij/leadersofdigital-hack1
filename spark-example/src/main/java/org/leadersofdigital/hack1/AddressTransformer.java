@@ -20,7 +20,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class AddressTransformer {
     
-    private static final Pattern ADDR_REGEX = Pattern.compile(".*?(((кв|к|стр|д|дом)\\.?\\s\\d{1,4})|([а-яА-Я]{4,}\\s[\\d\\-\\/]{1,5}))"); 
+    private static final Pattern ADDR_REGEX = Pattern.compile(".*?(((кв|к|стр|д|дом)\\.?\\s[\\d]{1,4}\\/?[\\dа-яА-Я]{0,5})|([а-яА-Я]{4,}\\s[\\d\\-\\/]{1,5}))");
+    private static final Pattern MISSING_DATA_REGEX = Pattern.compile("(?<missing>(корп|стр)\\s)[а-яА-Я]"); 
     
     private final Tokenizer tokenizer = SimpleTokenizer.INSTANCE;
     
@@ -151,6 +152,12 @@ public class AddressTransformer {
         }
         
         String res = String.join(" ", words2);
+        
+        Matcher matcher = MISSING_DATA_REGEX.matcher(res);
+        if(matcher.find()) {
+            res = StringUtils.replace(res, matcher.group("missing"), "");
+        }
+        
         return res;
     }
 }

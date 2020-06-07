@@ -1,3 +1,4 @@
 .idea
 good.csv
 bad.csv
+/spark-example/target/
